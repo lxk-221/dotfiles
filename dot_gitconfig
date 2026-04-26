@@ -1,0 +1,13 @@
+[user]
+	name = lxk
+	email = 376721246@qq.com
+[core]
+	editor = vim
+[alias]
+	a = add
+	b = branch
+	c = commit
+
+	al = add --all
+
+	graph = log --all --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short --graph
