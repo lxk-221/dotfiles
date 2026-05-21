@@ -158,9 +158,6 @@ alias cf-hive="cf hive"
 alias cf-mcp="cf mcp"
 alias cf-memory="cf memory"
 
-# OpenClaw Completion
-source "/Users/lxk/.openclaw/completions/openclaw.zsh"
-
 export PATH="/Users/lxk/.pixi/bin:$PATH"
 
 # starship
