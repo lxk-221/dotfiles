@@ -15,6 +15,14 @@ dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 command -v autojump &>/dev/null || sudo apt-get install -y autojump
 
 echo "[4/5] Installing starship..."
-command -v starship &>/dev/null || curl -sS https://starship.rs/install.sh | sh
+if ! command -v starship &>/dev/null; then
+    if command -v apt-get &>/dev/null; then
+        sudo apt install -y starship
+    elif command -v brew &>/dev/null; then
+        brew install starship
+    else
+        curl -sS https://starship.rs/install.sh | sh -s -- -y
+    fi
+fi
 
 echo "[5/5] Done!"
