@@ -16,13 +16,7 @@ command -v autojump &>/dev/null || sudo apt-get install -y autojump
 
 echo "[4/5] Installing starship..."
 if ! command -v starship &>/dev/null; then
-    if command -v apt-get &>/dev/null; then
-        sudo apt install -y starship
-    elif command -v brew &>/dev/null; then
-        brew install starship
-    else
-        curl -sS https://starship.rs/install.sh | sh -s -- -y
-    fi
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
 echo "[5/5] Done!"
