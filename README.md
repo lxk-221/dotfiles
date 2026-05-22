@@ -15,9 +15,9 @@ chezmoi update
 # modify chezmoi template and update to github
 # cd -> add -> commit -> push
 chezmoi cd
-chezmoi add .
-chezmoi commit
-chezmoi push
+chezmoi git add .
+chezmoi git commit
+chezmoi git push
 ```
 
 ## device-specific setting
@@ -38,3 +38,11 @@ vim  ~/.config/chezmoi/chezmoi.toml
 ```
 - sourceVCS, only need to add, auto commit and push
 - conda\_path, will be used in zshrc, need to fill with the device specific conda path
+
+## Download Font for starship
+### Download Font
+[nerdfont](https://www.nerdfonts.com/font-downloads)
+### Set Font
+- Mac: iTerm2 → Settings (Cmd+,) → Profiles → Text → Font
+- Linux: Preferences → Profiles → Text → Custom Font
+- vscode/cursor: Preference -> Font Family -> Termial 
