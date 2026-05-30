@@ -43,6 +43,8 @@ vim  ~/.config/chezmoi/chezmoi.toml
 ### Download Font
 [nerdfont](https://www.nerdfonts.com/font-downloads)
 ### Set Font
-- Mac: iTerm2 → Settings (Cmd+,) → Profiles → Text → Font
-- Linux: Preferences → Profiles → Text → Custom Font
-- vscode/cursor: Preference -> Font Family -> Termial 
+> Mono means the font has equal width, which is suitable to be used in terminal
+- Mac: iTerm2 → Settings (Cmd+,) → Profiles → Text → Font → Select '0xProto Nerd Font Mono'
+- Linux: Terminal → Preferences → Profiles → Text → Custom Font → Select '0xProto Nerd Font Mono'
+- vscode/cursor: Preference -> Font Family -> Termial  # '0xProto Nerd Font Mono'
+Remember to **Close All Vscode/Cursor windows** to enable the font change
