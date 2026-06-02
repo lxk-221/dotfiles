@@ -161,3 +161,17 @@ export PATH="/Users/lxk/.pixi/bin:$PATH"
 
 # starship
 eval "$(starship init zsh)"
+
+# alias
+tarzip() {
+  local src="${1:?用法: tarzip <目录> [输出文件名]}"
+  local dst="${2:-${src%/}.tar.gz}"
+  tar cf - "$src" | pv -s "$(du -sm "$src" | cut -f1)M" | gzip > "$dst"
+  echo "→ $dst"
+}
+
+tarunzip() {
+  local src="${1:?用法: tarunzip <文件.tar.gz>}"
+  pv "$src" | tar xz
+}
+
