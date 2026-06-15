@@ -48,3 +48,8 @@ vim  ~/.config/chezmoi/chezmoi.toml
 - Linux: Terminal → Preferences → Profiles → Text → Custom Font → Select '0xProto Nerd Font Mono'
 - vscode/cursor: Preference -> Font Family -> Termial  # '0xProto Nerd Font Mono'
 Remember to **Close All Vscode/Cursor windows** to enable the font change
+
+## For a totally new machine
+```shell
+sudo apt install net-tools curl vim git tmux
+```
