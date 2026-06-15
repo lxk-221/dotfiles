@@ -1,7 +1,7 @@
 ## First Use
 ```
 # install chezmoi
-sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b $(HOME)/.local/bin
+sudo sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b /usr/local/bin
 
 # first init
 chezmoi init --apply https://github.com/lxk-221/dotfiles
