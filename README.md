@@ -53,3 +53,14 @@ Remember to **Close All Vscode/Cursor windows** to enable the font change
 ```shell
 sudo apt install net-tools curl vim git tmux
 ```
+
+## Chinese Input (fcitx5, Linux/Ubuntu)
+On Linux/apt systems, `run_once_lxk_install.sh` installs [fcitx5](https://fcitx-im.org/) and sets it as the active input method framework automatically. The pinyin config (微软双拼 / Microsoft double pinyin) is managed at `dot_config/fcitx5/conf/pinyin.conf`.
+
+After first install, **log out and back in** so fcitx5 takes over the keyboard (the `~/.xinputrc` written by `im-config` is read at X session start).
+
+If GNOME's built-in IBus pinyin still interferes, drop the IBus source while keeping the keyboard layout:
+```shell
+gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'cn')]"
+```
+Toggle Chinese/English with `Ctrl+Space`. To change the double-pinyin scheme, edit `ShuangpinProfile` in `pinyin.conf` (e.g. `MS`=微软, `Xiaohe`=小鹤, `Ziranma`=自然码) and reload with `fcitx5 -r -d`.
