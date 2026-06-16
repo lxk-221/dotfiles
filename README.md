@@ -5,6 +5,7 @@ sudo sh -c "$(curl -fsSL https://get.chezmoi.io)" -- -b /usr/local/bin
 
 # first init
 chezmoi init --apply https://github.com/lxk-221/dotfiles
+chezmoi init --apply git@github.com:lxk-221/dotfiles.git   # 已配 SSH key 用这行：可以push
 ```
 
 ## Basic Usage
