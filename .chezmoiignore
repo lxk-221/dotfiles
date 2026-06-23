@@ -3,3 +3,13 @@ README.md
 {{ if ne .chezmoi.os "linux" }}
 .config/fcitx5
 {{ end }}
+
+# Linux-only install script (apt-based); skip everywhere else.
+{{ if ne .chezmoi.os "linux" }}
+run_once_lxk_install.sh
+{{ end }}
+
+# macOS-only install script (Homebrew-based); skip everywhere else.
+{{ if ne .chezmoi.os "darwin" }}
+run_once_lxk_install_darwin.sh
+{{ end }}
