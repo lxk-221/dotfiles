@@ -48,7 +48,17 @@ vim  ~/.config/chezmoi/chezmoi.toml
 - Mac: iTerm2 → Settings (Cmd+,) → Profiles → Text → Font → Select '0xProto Nerd Font Mono'
 - Linux: Terminal → Preferences → Profiles → Text → Custom Font → Select '0xProto Nerd Font Mono'
 - vscode/cursor: Preference -> Font Family -> Termial  # '0xProto Nerd Font Mono'
+- ZCode Terminal: For local termnial, set font in "setting"; For remote terminal ZCode will detect code setting for font set, so a easy way is to run the command below
+```shell
+mkdir -p ~/.config/Code/User
+cat > ~/.config/Code/User/settings.json <<'EOF'
+{
+  "terminal.integrated.fontFamily": "'0xProto Nerd Font Mono'"
+}
+EOF
+```
 Remember to **Close All Vscode/Cursor windows** to enable the font change
+
 
 ## For a totally new machine
 ```shell
