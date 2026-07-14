@@ -9,6 +9,7 @@ if [[ "$(uname -s)" != "Linux" ]] || ! command -v apt-get >/dev/null 2>&1; then
 fi
 
 echo "[1/8] Installing zsh..."
+sudo apt-get update
 command -v zsh &>/dev/null || sudo apt install zsh -y
 
 echo "[2/8] Installing oh-my-zsh..."
