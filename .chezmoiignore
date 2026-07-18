@@ -6,7 +6,7 @@ README.md
 
 # Linux-only install script (apt-based); skip everywhere else.
 {{ if ne .chezmoi.os "linux" }}
-run_once_lxk_install.sh
+run_once_lxk_install_linux.sh
 {{ end }}
 
 # macOS-only install script (Homebrew-based); skip everywhere else.

@@ -77,13 +77,13 @@ sudo apt install net-tools curl vim git tmux
 ## OS-specific Install Scripts
 `run_once_*.sh` are guarded both in `.chezmoiignore` (per-OS) and inside the script itself, so only the matching one runs on a given machine:
 
-- **Linux (apt)** — `run_once_lxk_install.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM.
+- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM.
 - **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font, tmux + TPM. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
 
 Each script is idempotent — safe to re-run via `chezmoi apply`.
 
 ## Chinese Input (fcitx5, Linux/Ubuntu)
-On Linux/apt systems, `run_once_lxk_install.sh` installs [fcitx5](https://fcitx-im.org/) and sets it as the active input method framework automatically. The pinyin config (微软双拼 / Microsoft double pinyin) is managed at `dot_config/fcitx5/conf/pinyin.conf`.
+On Linux/apt systems, `run_once_lxk_install_linux.sh` installs [fcitx5](https://fcitx-im.org/) and sets it as the active input method framework automatically. The pinyin config (微软双拼 / Microsoft double pinyin) is managed at `dot_config/fcitx5/conf/pinyin.conf`.
 
 After first install, **log out and back in** so fcitx5 takes over the keyboard (the `~/.xinputrc` written by `im-config` is read at X session start).
 

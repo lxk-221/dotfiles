@@ -1,10 +1,16 @@
 #!/bin/bash
 set -e
 
-# This script targets Debian/Ubuntu (apt-based) systems.
-# On any other OS / package manager it is a no-op.
+# This script targets Debian/Ubuntu and other apt-based Linux distros.
+# The filename uses the generic `_linux` token for symmetry with
+# `_darwin.sh` and alignment with chezmoi's `.chezmoi.os == "linux"` check,
+# but the actual scope is narrower: the guard below requires `apt-get`, so
+# non-apt distros (Arch, Fedora, Alpine, ...) no-op here even though they
+# are Linux too. If you ever need to support another package manager, add a
+# sibling script (e.g. run_once_lxk_install_linux_arch.sh) rather than
+# branching this one.
 if [[ "$(uname -s)" != "Linux" ]] || ! command -v apt-get >/dev/null 2>&1; then
-    echo "[lxk_install] 非 Linux/apt 系统，跳过安装脚本。"
+    echo "[lxk_install_linux] 非 Linux/apt 系统，跳过安装脚本。"
     exit 0
 fi
 
