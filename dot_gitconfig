@@ -11,3 +11,5 @@
 	al = add --all
 
 	graph = log --all --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short --graph
+[safe]
+	directory = *
