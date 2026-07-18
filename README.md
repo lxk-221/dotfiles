@@ -36,15 +36,25 @@ vim  ~/.config/chezmoi/chezmoi.toml
 ```
 - sourceVCS: auto commit and push. No tool-specific variables needed anymore.
 
-## Download Font for starship
-### Download Font
-[nerdfont](https://www.nerdfonts.com/font-downloads)
-### Set Font
-> Mono means the font has equal width, which is suitable to be used in terminal
-- Mac: iTerm2 → Settings (Cmd+,) → Profiles → Text → Font → Select '0xProto Nerd Font Mono'
-- Linux: Terminal → Preferences → Profiles → Text → Custom Font → Select '0xProto Nerd Font Mono'
-- vscode/cursor: Preference -> Font Family -> Termial  # '0xProto Nerd Font Mono'
-- ZCode Terminal: For local termnial, set font in "setting"; For remote terminal ZCode will detect code setting for font set, so a easy way is to run the command below
+## Font for starship (0xProto Nerd Font)
+starship 等 prompt 依赖 Nerd Font 的图标字形。
+
+### 自动安装(无需手动下载)
+`run_once_lxk_install*.sh` 会在首次 `chezmoi apply` 时自动下载并安装 **0xProto Nerd Font**(从 [ryanoasis/nerd-fonts](https://github.com/ryanoasis/nerd-fonts) 的 latest release 下载同一份 zip,跨平台一致):
+
+- **macOS** → 解压到 `~/Library/Fonts/`(系统即装即用,无需刷新缓存)
+- **Linux 桌面**(`$DISPLAY` 非空)→ 解压到 `~/.local/share/fonts/` + `fc-cache -f`
+- **Linux 服务器(无 `$DISPLAY`)** → 自动跳过。服务器不渲染字体,渲染发生在你本地终端(SSH 连接),所以服务器装字体无意义。
+
+字体文件**不进 git 仓库**(二进制大文件不该进 git,且服务器不需要)。每次 apply 检测到 `0xProtoNerdFontMono-Regular.ttf` 不存在才下载,幂等。
+
+### 手动设置终端字体(这一步仍需人工)
+字体装好后,需要在终端里**选中**它才会生效。各终端的设置入口:
+> `Mono` = 等宽(适合终端);`Propo` = 比例宽;`NerdFont`(无后缀)= 介于两者之间。终端用 `Mono`。
+
+- **iTerm2**: Settings (Cmd+,) → Profiles → Text → Font → '0xProto Nerd Font Mono'
+- **Linux Terminal**(GNOME Terminal 等): Preferences → Profiles → Text → Custom Font → '0xProto Nerd Font Mono'
+- **VS Code / Cursor**: Preferences → Font Family → Terminal → `0xProto Nerd Font Mono`。或在远程机器跑:
 ```shell
 mkdir -p ~/.config/Code/User
 cat > ~/.config/Code/User/settings.json <<'EOF'
@@ -53,7 +63,10 @@ cat > ~/.config/Code/User/settings.json <<'EOF'
 }
 EOF
 ```
-Remember to **Close All Vscode/Cursor windows** to enable the font change
+  改完**关闭所有 VS Code / Cursor 窗口**才生效。
+- **ZCode Terminal**: 本地终端在 setting 里设字体;远程终端 ZCode 会探测 Code 的字体设置,所以跑上面那段写 `settings.json` 即可。
+
+**为什么字体配置不自动化:** 各终端的字体配置存储方式差异极大(iTerm2 的 plist、VS Code 的 JSON、GNOME Terminal 的 dconf…),且 macOS Terminal.app 的二进制 plist 几乎无法安全脚本化。自动化的收益(省一次点击)远小于引入的复杂度和脆弱性,因此保留为人工步骤。字体**下载安装**(真正的痛点)已自动化。
 
 
 ## For a totally new machine
@@ -64,8 +77,8 @@ sudo apt install net-tools curl vim git tmux
 ## OS-specific Install Scripts
 `run_once_*.sh` are guarded both in `.chezmoiignore` (per-OS) and inside the script itself, so only the matching one runs on a given machine:
 
-- **Linux (apt)** — `run_once_lxk_install.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM.
-- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, tmux + TPM. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
+- **Linux (apt)** — `run_once_lxk_install.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM.
+- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font, tmux + TPM. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
 
 Each script is idempotent — safe to re-run via `chezmoi apply`.
 
