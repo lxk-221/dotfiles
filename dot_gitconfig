@@ -13,3 +13,9 @@
 	graph = log --all --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short --graph
 [safe]
 	directory = *
+# Reroute GitHub SSH through port 443. In some networks github.com:22 is
+# reset mid-handshake (kex_exchange_identification: Connection closed),
+# while ssh.github.com:443 (HTTPS port) is not filtered. This makes all
+# git@github.com: remotes transparently use 443.
+[url "ssh://git@ssh.github.com:443/"]
+	insteadOf = git@github.com:
