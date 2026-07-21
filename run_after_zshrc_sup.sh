@@ -77,3 +77,15 @@ if [ -d "$HOME/.pixi/bin" ]; then
     echo '# pixi' >> "$ZSHRC"
     echo 'export PATH="$HOME/.pixi/bin:$PATH"' >> "$ZSHRC"
 fi
+
+# ---------- cargo (rustup) ----------
+# cargo 随 rustup 安装,路径硬编码为 ~/.cargo/bin(rustup 不支持自定义)。这里不依赖
+# rustup 自动追加的 `. "$HOME/.cargo/env"`(那会污染 rc 且与我们"工具配置归 run_after 统一
+# 管理"的原则冲突),改用目录探测 + echo PATH,和 go/pixi 一致。zsh 补全未启用(基础使用
+# 不需要;若要补全,手动 `rustup completions zsh cargo > ~/.zsh/completions/_cargo`)。
+if [ -d "$HOME/.cargo/bin" ]; then
+    echo "[run_after_zshrc_sup] cargo found at $HOME/.cargo/bin"
+    echo '' >> "$ZSHRC"
+    echo '# cargo (rustup)' >> "$ZSHRC"
+    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> "$ZSHRC"
+fi
