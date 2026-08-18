@@ -1,10 +1,10 @@
-# starship SSH 安全版提示符(无 nerd font 依赖)
+# starship SSH 安全版提示符(plain,无 nerd font 依赖)
 #
 # 生成方式:starship preset no-nerd-font(官方素预设)+ 下方手工补丁。
 # 用途:zshrc 检测到 SSH 会话($SSH_CONNECTION 非空)时默认使用本配置——
 # 共享服务器上渲染提示符的是连接者本机的终端,字体不可控(同事往往没有
 # nerd font),nerd/powerline 字形会显示为乱码豆腐块。本地终端默认用
-# ~/.config/starship.toml(gruvbox-rainbow);`nerd`/`ascii` 函数可即时切换。
+# ~/.config/starship.toml(gruvbox-rainbow);`nerd`/`plain` 函数可即时切换。
 #
 # 补丁说明(官方预设未覆盖、但默认符号仍是 powerline/nerd 字形的模块):
 #   - git_branch:默认 U+E0A0(powerline 区,实测触发豆腐块)→ 置空,渲染为 "on main"

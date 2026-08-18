@@ -72,8 +72,8 @@ EOF
 本地终端的字体自己可控;但 SSH 到共享服务器时,渲染提示符的是**连接者本机的终端**——同事往往没装 nerd font,nerd/powerline 字形会显示为乱码。zshrc 因此做了运行时判断:
 
 - **本地终端**:默认 `~/.config/starship.toml`(gruvbox-rainbow,nerd 版)
-- **SSH 会话**(`$SSH_CONNECTION` 非空):默认 `~/.config/starship-ascii.toml`(官方 no-nerd-font 预设 + git_branch/docker_context 补丁,零特殊字形,颜色保留)
-- `nerd` / `ascii`:当前会话内即时切换——starship 每次渲染都重读 `STARSHIP_CONFIG`,下一个提示符即生效,无需重新 init
+- **SSH 会话**(`$SSH_CONNECTION` 非空):默认 `~/.config/starship-plain.toml`(官方 no-nerd-font 预设 + git_branch/docker_context 补丁,零特殊字形,颜色保留)
+- `nerd` / `plain`:当前会话内即时切换——starship 每次渲染都重读 `STARSHIP_CONFIG`,下一个提示符即生效,无需重新 init
 - 切换仅当前会话有效:共享账号下无法区分你和同事,per-login 是唯一正确粒度;同事分独立账号后,可删掉 zshrc 里的 SSH 默认降级
 
 

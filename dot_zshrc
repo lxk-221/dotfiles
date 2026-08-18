@@ -87,14 +87,14 @@ alias curlp='proxy curl'
 alias wgetp='proxy wget'
 
 # starship prompt — 双配置:本地终端用 gruvbox-rainbow(nerd 版);SSH 会话默认用
-# no-nerd-font 安全版(~/.config/starship-ascii.toml)——远端渲染终端的字体不可控
+# plain 版(~/.config/starship-plain.toml,no-nerd-font)——远端渲染终端的字体不可控
 # (共享服务器同事无 nerd font 会看到乱码)。starship 每次渲染时重读 STARSHIP_CONFIG,
-# 因此 nerd/ascii 在下一个提示符立即生效,仅当前会话有效。
+# 因此 nerd/plain 在下一个提示符立即生效,仅当前会话有效。
 export STARSHIP_CONFIG="$HOME/.config/starship.toml"
-[ -n "${SSH_CONNECTION:-}" ] && [ -f "$HOME/.config/starship-ascii.toml" ] && \
-    export STARSHIP_CONFIG="$HOME/.config/starship-ascii.toml"
+[ -n "${SSH_CONNECTION:-}" ] && [ -f "$HOME/.config/starship-plain.toml" ] && \
+    export STARSHIP_CONFIG="$HOME/.config/starship-plain.toml"
 nerd()  { export STARSHIP_CONFIG="$HOME/.config/starship.toml"; }
-ascii() { export STARSHIP_CONFIG="$HOME/.config/starship-ascii.toml"; }
+plain() { export STARSHIP_CONFIG="$HOME/.config/starship-plain.toml"; }
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
 # alias / functions
