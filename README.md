@@ -68,6 +68,14 @@ EOF
 
 **为什么字体配置不自动化:** 各终端的字体配置存储方式差异极大(iTerm2 的 plist、VS Code 的 JSON、GNOME Terminal 的 dconf…),且 macOS Terminal.app 的二进制 plist 几乎无法安全脚本化。自动化的收益(省一次点击)远小于引入的复杂度和脆弱性,因此保留为人工步骤。字体**下载安装**(真正的痛点)已自动化。
 
+### SSH 会话自动降级为无字形提示符(共享服务器场景)
+本地终端的字体自己可控;但 SSH 到共享服务器时,渲染提示符的是**连接者本机的终端**——同事往往没装 nerd font,nerd/powerline 字形会显示为乱码。zshrc 因此做了运行时判断:
+
+- **本地终端**:默认 `~/.config/starship.toml`(gruvbox-rainbow,nerd 版)
+- **SSH 会话**(`$SSH_CONNECTION` 非空):默认 `~/.config/starship-ascii.toml`(官方 no-nerd-font 预设 + git_branch/docker_context 补丁,零特殊字形,颜色保留)
+- `nerd` / `ascii`:当前会话内即时切换——starship 每次渲染都重读 `STARSHIP_CONFIG`,下一个提示符即生效,无需重新 init
+- 切换仅当前会话有效:共享账号下无法区分你和同事,per-login 是唯一正确粒度;同事分独立账号后,可删掉 zshrc 里的 SSH 默认降级
+
 
 ## For a totally new machine
 ```shell
@@ -115,7 +123,7 @@ macOS 的输入法走系统自带的「键盘 → 输入源」，无需 fcitx5�
 
 **为什么这样设计:** chezmoi apply 用静态 `dot_zshrc` 覆盖目标文件,天然抹掉上次的动态部分;`run_after_` 前缀保证脚本在文件覆盖之后才执行,追加始终从 marker 下方空白开始,因此天然幂等。这避免了"用 chezmoi toml 变量控制工具配置"的耦合——每台机器零配置,工具配置随装随有。
 
-**注意 `chezmoi diff` 的噪音:** 由于 chezmoi 管理的目标状态是 `[静态 + marker]`,而 apply 后实际文件多了动态部分,所以 `chezmoi diff` 会显示"即将删除 marker 以下的行"——这是预期行为,apply 会重新生成,无害。
+**注意 `chezmoi diff` 的噪音:** 由于 chezmoi 管理的目标状态是 `[静态 + marker]`,而 apply 后实际文件多了动态部分,所以 `chezmoi diff` 会显示"即将删除 marker 以下的行"——这是预期行为,apply 会重新生成,无害。同理,**每次交互式 `chezmoi apply` 会询问一次** ".zshrc has changed since chezmoi last wrote it"(run_after 的追加让 live 文件永远不等于 chezmoi 记录的上次写入内容)——按 `y` 确认即可;脚本/非交互场景用 `chezmoi apply --force`。这是该架构的固定成本。
 
 ## 三类脚本的职责划分
 
