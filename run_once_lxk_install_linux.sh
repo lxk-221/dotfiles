@@ -21,12 +21,17 @@ command -v zsh &>/dev/null || sudo apt install zsh -y
 echo "[2/10] Installing oh-my-zsh..."
 [ -d "$HOME/.oh-my-zsh" ] || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
-echo "[3/10] Installing zsh plugins + autojump/pv..."
+echo "[3/10] Installing zsh plugins + zoxide/pv..."
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-autosuggestions "$dir"
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$dir"
-command -v autojump &>/dev/null || sudo apt-get install -y autojump
+command -v zoxide &>/dev/null || sudo apt-get install -y zoxide || {
+    # 旧 Ubuntu 无 zoxide 包时回落到 GitHub 静态二进制(资产名带版本号,需先解析)
+    zver=$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/ajeetdsouza/zoxide/releases/latest | sed 's|.*/tag/v||')
+    curl -fsSL "https://github.com/ajeetdsouza/zoxide/releases/download/v$zver/zoxide-$zver-x86_64-unknown-linux-musl.tar.gz" \
+        | sudo tar xz -C /usr/local/bin zoxide
+}
 command -v pv &>/dev/null || sudo apt-get install -y pv
 
 echo "[4/10] Installing starship..."

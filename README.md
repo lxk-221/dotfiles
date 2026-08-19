@@ -40,6 +40,18 @@ vim  ~/.config/chezmoi/chezmoi.toml
 - sourceVCS: auto commit and push. No tool-specific variables needed anymore.
 - diff: `chezmoi diff` 输出经 delta 渲染(delta 由 run_once 脚本安装)。
 
+## zoxide(目录跳转,替代 autojump)
+autojump 已停止维护(上游推荐迁移 zoxide)且为 Python 脚本;zoxide 是 Rust 预编译二进制,零运行时依赖。run_once 安装,zshrc 中 `zoxide init zsh` 接入(装好即生效,未装自动跳过)。每次 `cd` 自动学习。
+
+| 命令 | 作用 |
+|---|---|
+| `z foo` | 跳到最匹配 foo 的目录(旧 `j foo` 的新写法) |
+| `z foo bar` | 多关键词逐级缩小 |
+| `zi foo` | 交互式选择(配 fzf 体验最佳) |
+| `zoxide query foo` | 只看匹配排行,不跳转 |
+
+旧数据迁移(每台用过 autojump 的机器跑一次):`zoxide import autojump`(v0.10+ 语法,自动探测默认 db 位置;macOS 在 `~/Library/autojump/`,Linux 在 `~/.local/share/autojump/`)。想保留 `j` 的肌肉记忆:zshrc 里 init 改为 `zoxide init zsh --cmd j`。
+
 ## Font for starship (0xProto Nerd Font)
 starship 等 prompt 依赖 Nerd Font 的图标字形。
 
@@ -89,8 +101,8 @@ sudo apt install net-tools curl vim git tmux
 ## OS-specific Install Scripts
 `run_once_*.sh` are guarded both in `.chezmoiignore` (per-OS) and inside the script itself, so only the matching one runs on a given machine:
 
-- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, delta, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM + tmux plugins.
-- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, delta, 0xProto Nerd Font, tmux + TPM + tmux plugins. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
+- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, zoxide, starship, delta, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM + tmux plugins.
+- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, zoxide, starship, delta, 0xProto Nerd Font, tmux + TPM + tmux plugins. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
 
 Each script is idempotent — safe to re-run via `chezmoi apply`.
 
@@ -135,7 +147,7 @@ macOS 的输入法走系统自带的「键盘 → 输入源」，无需 fcitx5�
 
 | 脚本 | 何时跑 | 职责 |
 |---|---|---|
-| `run_once_lxk_install*.sh` | 内容 hash 变化时跑一次 | **只装"通用基础"**:zsh、oh-my-zsh、zsh 插件、starship、tmux、tpm、tmux 插件、autojump(Linux 还有 fcitx5、xsel)。不跑任何 `xxx init`/`xxx setup` |
+| `run_once_lxk_install*.sh` | 内容 hash 变化时跑一次 | **只装"通用基础"**:zsh、oh-my-zsh、zsh 插件、starship、tmux、tpm、tmux 插件、zoxide(Linux 还有 fcitx5、xsel)。不跑任何 `xxx init`/`xxx setup` |
 | `dot_zshrc` | 每次 apply 覆盖目标 | **静态配置**(oh-my-zsh、proxy、starship init、函数、alias) |
 | `run_after_zshrc_sup.sh` | **每次 apply** 都跑(`run_after_` 前缀保证在文件写入后执行) | **动态配置**:探测 conda/pnpm/go/pixi/cargo,有 init 的调官方 init,没有的 echo PATH,全部追加到 marker 以下 |
 
@@ -147,7 +159,7 @@ macOS 的输入法走系统自带的「键盘 → 输入源」，无需 fcitx5�
 
 | 类别 | 例子 | 谁负责安装 | 配置怎么进 zshrc |
 |---|---|---|---|
-| **基础工具**(通用 CLI / 环境骨架) | zsh、oh-my-zsh、tmux、tpm、starship、autojump | `run_once_` 安装脚本 | starship 走 `dot_zshrc` 里的静态 `command -v` 守卫;其余通过 oh-my-zsh plugin 或自身机制,不单独配 |
+| **基础工具**(通用 CLI / 环境骨架) | zsh、oh-my-zsh、tmux、tpm、starship、zoxide | `run_once_` 安装脚本 | starship/zoxide 走 `dot_zshrc` 里的静态 `command -v` 守卫;其余通过自身机制,不单独配 |
 | **额外工具**(项目/语言/包管理器) | conda、pnpm、pixi、go、cargo | **用户自己装** | `run_after_zshrc_sup.sh` 探测到就自动写配置 |
 
 **为什么这样分:**
