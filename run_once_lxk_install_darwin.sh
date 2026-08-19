@@ -62,7 +62,10 @@ fi
 
 echo "[7/8] Installing tmux + TPM (Tmux Plugin Manager)..."
 command -v tmux >/dev/null 2>&1 || brew install tmux
-# TPM: clone if missing. Then inside tmux press <prefix> + I to install plugins (e.g. tmux-sensible).
 [ -d "$HOME/.tmux/plugins/tpm" ] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
-echo "[8/8] Done! Start/restart tmux, then press <prefix> + I to load plugins."
+# tmux plugins (keep in sync with the @plugin list in dot_tmux.conf)
+dir="$HOME/.tmux/plugins/tmux-sensible"
+[ -d "$dir" ] || git clone https://github.com/tmux-plugins/tmux-sensible "$dir"
+
+echo "[8/8] Done! Start/restart tmux — plugins are pre-cloned and load at startup (prefix + U to update)."

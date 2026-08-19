@@ -85,10 +85,12 @@ sudo apt install net-tools curl vim git tmux
 ## OS-specific Install Scripts
 `run_once_*.sh` are guarded both in `.chezmoiignore` (per-OS) and inside the script itself, so only the matching one runs on a given machine:
 
-- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM.
-- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font, tmux + TPM. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
+- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM + tmux plugins.
+- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font, tmux + TPM + tmux plugins. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
 
 Each script is idempotent — safe to re-run via `chezmoi apply`.
+
+tmux 插件由脚本直接 git clone(与 zsh 插件同款模式),不依赖 TPM 的 `prefix + I`:apply 终端里可见进度、可 Ctrl-C 中断;tmux 启动时自动加载,TPM 仅保留 `prefix + U` 用于更新。
 
 ## Chinese Input (fcitx5, Linux/Ubuntu)
 On Linux/apt systems, `run_once_lxk_install_linux.sh` installs [fcitx5](https://fcitx-im.org/) and sets it as the active input method framework automatically. The pinyin config (微软双拼 / Microsoft double pinyin) is managed at `dot_config/fcitx5/conf/pinyin.conf`.
@@ -129,7 +131,7 @@ macOS 的输入法走系统自带的「键盘 → 输入源」，无需 fcitx5�
 
 | 脚本 | 何时跑 | 职责 |
 |---|---|---|
-| `run_once_lxk_install*.sh` | 内容 hash 变化时跑一次 | **只装"通用基础"**:zsh、oh-my-zsh、zsh 插件、starship、tmux、tpm、autojump(Linux 还有 fcitx5、xsel)。不跑任何 `xxx init`/`xxx setup` |
+| `run_once_lxk_install*.sh` | 内容 hash 变化时跑一次 | **只装"通用基础"**:zsh、oh-my-zsh、zsh 插件、starship、tmux、tpm、tmux 插件、autojump(Linux 还有 fcitx5、xsel)。不跑任何 `xxx init`/`xxx setup` |
 | `dot_zshrc` | 每次 apply 覆盖目标 | **静态配置**(oh-my-zsh、proxy、starship init、函数、alias) |
 | `run_after_zshrc_sup.sh` | **每次 apply** 都跑(`run_after_` 前缀保证在文件写入后执行) | **动态配置**:探测 conda/pnpm/go/pixi/cargo,有 init 的调官方 init,没有的 echo PATH,全部追加到 marker 以下 |
 

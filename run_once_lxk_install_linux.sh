@@ -81,7 +81,10 @@ im-config -n fcitx5
 
 echo "[8/9] Installing tmux + TPM (Tmux Plugin Manager)..."
 command -v tmux >/dev/null 2>&1 || sudo apt-get install -y tmux
-# TPM: clone if missing. Then inside tmux press <prefix> + I to install plugins (e.g. tmux-sensible).
 [ -d "$HOME/.tmux/plugins/tpm" ] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
-echo "[9/9] Done! Log out and back in (needed for the default shell + fcitx5). Start/restart tmux, then press <prefix> + I to load plugins."
+# tmux plugins (keep in sync with the @plugin list in dot_tmux.conf)
+dir="$HOME/.tmux/plugins/tmux-sensible"
+[ -d "$dir" ] || git clone https://github.com/tmux-plugins/tmux-sensible "$dir"
+
+echo "[9/9] Done! Log out and back in (needed for the default shell + fcitx5). Start/restart tmux — plugins are pre-cloned and load at startup (prefix + U to update)."
