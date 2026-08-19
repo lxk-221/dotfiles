@@ -14,23 +14,31 @@ if [[ "$(uname -s)" != "Linux" ]] || ! command -v apt-get >/dev/null 2>&1; then
     exit 0
 fi
 
-echo "[1/9] Installing zsh..."
+echo "[1/10] Installing zsh..."
 sudo apt-get update
 command -v zsh &>/dev/null || sudo apt install zsh -y
 
-echo "[2/9] Installing oh-my-zsh..."
+echo "[2/10] Installing oh-my-zsh..."
 [ -d "$HOME/.oh-my-zsh" ] || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
-echo "[3/9] Installing zsh plugins..."
+echo "[3/10] Installing zsh plugins..."
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-autosuggestions "$dir"
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$dir"
 command -v autojump &>/dev/null || sudo apt-get install -y autojump
 
-echo "[4/9] Installing starship..."
+echo "[4/10] Installing starship..."
 if ! command -v starship &>/dev/null; then
     curl -sSL https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-musl.tar.gz | sudo tar xz -C /usr/local/bin
+fi
+
+# delta 的 release 资产名带版本号,无法用 latest/download 固定路径,先从重定向解析版本
+echo "[5/10] Installing delta (diff pager for git & chezmoi)..."
+if ! command -v delta &>/dev/null; then
+    ver=$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/dandavison/delta/releases/latest | sed 's|.*/tag/||')
+    curl -fsSL "https://github.com/dandavison/delta/releases/download/$ver/delta-$ver-x86_64-unknown-linux-musl.tar.gz" \
+        | sudo tar xz -C /usr/local/bin --strip-components=1 "delta-$ver-x86_64-unknown-linux-musl/delta"
 fi
 
 # 0xProto Nerd Font: only useful on a Linux box with a desktop/GUI terminal.
@@ -39,7 +47,7 @@ fi
 # (ryanoasis/nerd-fonts latest release); only the install location + cache
 # refresh differ. Font files are NOT stored in this repo — see the macOS script
 # for the same rationale.
-echo "[5/9] Installing 0xProto Nerd Font (desktop only)..."
+echo "[5/10] Installing 0xProto Nerd Font (desktop only)..."
 if [ -z "${DISPLAY:-}" ]; then
     echo "       No \$DISPLAY (headless server) — fonts are rendered by your"
     echo "       local terminal over SSH, so skipping font install here."
@@ -64,12 +72,12 @@ else
     fi
 fi
 
-echo "[6/9] Setting default shell to zsh..."
+echo "[6/10] Setting default shell to zsh..."
 if [[ "$SHELL" != *zsh* ]]; then
     chsh -s "$(command -v zsh)"
 fi
 
-echo "[7/9] Installing fcitx5 (Chinese input, 微软双拼) and xsel (tmux clipboard)..."
+echo "[7/10] Installing fcitx5 (Chinese input, 微软双拼) and xsel (tmux clipboard)..."
 if ! command -v fcitx5 >/dev/null 2>&1; then
     sudo apt-get install -y fcitx5 fcitx5-chinese-addons fcitx5-config-qt \
         fcitx5-frontend-gtk3 fcitx5-frontend-gtk4 fcitx5-frontend-qt5 im-config
@@ -79,7 +87,7 @@ command -v xsel >/dev/null 2>&1 || sudo apt-get install -y xsel
 # Activate fcitx5 as the input method framework (writes ~/.xinputrc); idempotent.
 im-config -n fcitx5
 
-echo "[8/9] Installing tmux + TPM (Tmux Plugin Manager)..."
+echo "[8/10] Installing tmux + TPM (Tmux Plugin Manager)..."
 command -v tmux >/dev/null 2>&1 || sudo apt-get install -y tmux
 [ -d "$HOME/.tmux/plugins/tpm" ] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
@@ -87,4 +95,4 @@ command -v tmux >/dev/null 2>&1 || sudo apt-get install -y tmux
 dir="$HOME/.tmux/plugins/tmux-sensible"
 [ -d "$dir" ] || git clone https://github.com/tmux-plugins/tmux-sensible "$dir"
 
-echo "[9/9] Done! Log out and back in (needed for the default shell + fcitx5). Start/restart tmux — plugins are pre-cloned and load at startup (prefix + U to update)."
+echo "[10/10] Done! Log out and back in (needed for the default shell + fcitx5). Start/restart tmux — plugins are pre-cloned and load at startup (prefix + U to update)."

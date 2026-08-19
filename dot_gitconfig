@@ -3,6 +3,7 @@
 	email = 376721246@qq.com
 [core]
 	editor = vim
+	pager = delta
 [alias]
 	a = add
 	b = branch
@@ -19,3 +20,8 @@
 # git@github.com: remotes transparently use 443.
 [url "ssh://git@ssh.github.com:443/"]
 	insteadOf = git@github.com:
+# delta 只接管展示路径(core.pager),不影响编辑路径(core.editor=vim)
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true

@@ -30,11 +30,15 @@ vim  ~/.config/chezmoi/chezmoi.toml
 [edit]
     command = "vim"
 
+[diff]
+    command = "delta"
+
 [sourceVCS]
     autoCommit = true
     autoPush = true
 ```
 - sourceVCS: auto commit and push. No tool-specific variables needed anymore.
+- diff: `chezmoi diff` 输出经 delta 渲染(delta 由 run_once 脚本安装)。
 
 ## Font for starship (0xProto Nerd Font)
 starship 等 prompt 依赖 Nerd Font 的图标字形。
@@ -85,8 +89,8 @@ sudo apt install net-tools curl vim git tmux
 ## OS-specific Install Scripts
 `run_once_*.sh` are guarded both in `.chezmoiignore` (per-OS) and inside the script itself, so only the matching one runs on a given machine:
 
-- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM + tmux plugins.
-- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, 0xProto Nerd Font, tmux + TPM + tmux plugins. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
+- **Linux (apt)** — `run_once_lxk_install_linux.sh`: zsh, oh-my-zsh, zsh plugins, autojump, starship, delta, 0xProto Nerd Font (desktop only), fcitx5 (Chinese input), xsel (X11 clipboard), tmux + TPM + tmux plugins.
+- **macOS (Homebrew)** — `run_once_lxk_install_darwin.sh`: Homebrew, oh-my-zsh, zsh plugins, autojump, starship, delta, 0xProto Nerd Font, tmux + TPM + tmux plugins. zsh is skipped (default shell on macOS), and so are fcitx5/xsel (macOS uses the built-in input method and `pbcopy` for the clipboard).
 
 Each script is idempotent — safe to re-run via `chezmoi apply`.
 

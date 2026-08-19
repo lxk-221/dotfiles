@@ -9,7 +9,7 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
     exit 0
 fi
 
-echo "[1/8] Ensuring Homebrew is installed..."
+echo "[1/9] Ensuring Homebrew is installed..."
 if ! command -v brew >/dev/null 2>&1; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     # Make brew available in this shell (Apple Silicon path first, Intel path fallback).
@@ -20,10 +20,10 @@ if ! command -v brew >/dev/null 2>&1; then
     fi
 fi
 
-echo "[2/8] Installing oh-my-zsh..."
+echo "[2/9] Installing oh-my-zsh..."
 [ -d "$HOME/.oh-my-zsh" ] || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
-echo "[3/8] Installing zsh plugins..."
+echo "[3/9] Installing zsh plugins..."
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-autosuggestions "$dir"
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -31,11 +31,14 @@ dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 # autojump: on macOS the oh-my-zsh `autojump` plugin (already enabled in dot_zshrc)
 # sources `$(brew --prefix)/etc/autojump.zsh` for us, so no extra zshrc line is needed.
-echo "[4/8] Installing autojump..."
+echo "[4/9] Installing autojump..."
 command -v autojump >/dev/null 2>&1 || brew install autojump
 
-echo "[5/8] Installing starship..."
+echo "[5/9] Installing starship..."
 command -v starship >/dev/null 2>&1 || brew install starship
+
+echo "[6/9] Installing delta (diff pager for git & chezmoi)..."
+command -v delta >/dev/null 2>&1 || brew install git-delta
 
 # 0xProto Nerd Font: starship/others rely on Nerd Font glyphs. The font is NOT
 # stored in this repo (binaries don't belong in git, and servers don't render
@@ -43,7 +46,7 @@ command -v starship >/dev/null 2>&1 || brew install starship
 # ryanoasis/nerd-fonts and extract the .ttf files into the macOS per-user font
 # directory. macOS picks them up immediately (no font cache refresh needed).
 # Idempotent: skip if any one of the expected .ttf files is already present.
-echo "[6/8] Installing 0xProto Nerd Font..."
+echo "[6/9] Installing 0xProto Nerd Font..."
 FONT_DIR="$HOME/Library/Fonts"
 if [ -f "$FONT_DIR/0xProtoNerdFontMono-Regular.ttf" ]; then
     echo "       0xProto Nerd Font already installed, skipping."
@@ -60,7 +63,7 @@ else
     echo "         iTerm2 → Settings (Cmd+,) → Profiles → Text → Font"
 fi
 
-echo "[7/8] Installing tmux + TPM (Tmux Plugin Manager)..."
+echo "[7/9] Installing tmux + TPM (Tmux Plugin Manager)..."
 command -v tmux >/dev/null 2>&1 || brew install tmux
 [ -d "$HOME/.tmux/plugins/tpm" ] || git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 
@@ -68,4 +71,4 @@ command -v tmux >/dev/null 2>&1 || brew install tmux
 dir="$HOME/.tmux/plugins/tmux-sensible"
 [ -d "$dir" ] || git clone https://github.com/tmux-plugins/tmux-sensible "$dir"
 
-echo "[8/8] Done! Start/restart tmux — plugins are pre-cloned and load at startup (prefix + U to update)."
+echo "[9/9] Done! Start/restart tmux — plugins are pre-cloned and load at startup (prefix + U to update)."
