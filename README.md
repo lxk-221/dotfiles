@@ -50,7 +50,7 @@ autojump 已停止维护(上游推荐迁移 zoxide)且为 Python 脚本;zoxide �
 | `zi foo` | 交互式选择(配 fzf 体验最佳) |
 | `zoxide query foo` | 只看匹配排行,不跳转 |
 
-旧数据迁移(每台用过 autojump 的机器跑一次):`zoxide import autojump`(v0.10+ 语法,自动探测默认 db 位置;macOS 在 `~/Library/autojump/`,Linux 在 `~/.local/share/autojump/`)。想保留 `j` 的肌肉记忆:zshrc 里 init 改为 `zoxide init zsh --cmd j`。
+旧数据迁移(每台用过 autojump 的机器跑一次):`zoxide import autojump`(v0.10+ 语法,自动探测默认 db 位置;macOS 在 `~/Library/autojump/`,Linux 在 `~/.local/share/autojump/`)。`j`/`ji` 已设为 `z`/`zi` 的 alias,新旧肌肉记忆并存(init 的 `--cmd` 只支持单一命令名,若想让 `j` 成为唯一命令名才用它)。
 
 ## Font for starship (0xProto Nerd Font)
 starship 等 prompt 依赖 Nerd Font 的图标字形。

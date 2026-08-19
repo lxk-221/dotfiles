@@ -87,6 +87,8 @@ alias wgetp='proxy wget'
 
 # zoxide: smarter cd(替代已停维护的 autojump)。z <关键词> 跳转,zi 交互选择。
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+# j/ji:兼容旧 autojump 肌肉记忆(init 的 --cmd 只支持单一命令名,故用 alias 双轨并存)
+command -v zoxide >/dev/null 2>&1 && alias j='z' && alias ji='zi'
 
 # starship prompt — 双配置:本地终端用 gruvbox-rainbow(nerd 版);SSH 会话默认用
 # plain 版(~/.config/starship-plain.toml,no-nerd-font)——远端渲染终端的字体不可控
