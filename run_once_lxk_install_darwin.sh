@@ -31,8 +31,9 @@ dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 # autojump: on macOS the oh-my-zsh `autojump` plugin (already enabled in dot_zshrc)
 # sources `$(brew --prefix)/etc/autojump.zsh` for us, so no extra zshrc line is needed.
-echo "[4/9] Installing autojump..."
+echo "[4/9] Installing autojump + pv (tarzip/tarunzip dependency)..."
 command -v autojump >/dev/null 2>&1 || brew install autojump
+command -v pv >/dev/null 2>&1 || brew install pv
 
 echo "[5/9] Installing starship..."
 command -v starship >/dev/null 2>&1 || brew install starship

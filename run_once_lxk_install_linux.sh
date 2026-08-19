@@ -21,12 +21,13 @@ command -v zsh &>/dev/null || sudo apt install zsh -y
 echo "[2/10] Installing oh-my-zsh..."
 [ -d "$HOME/.oh-my-zsh" ] || sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
-echo "[3/10] Installing zsh plugins..."
+echo "[3/10] Installing zsh plugins + autojump/pv..."
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-autosuggestions "$dir"
 dir=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 [ -d "$dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$dir"
 command -v autojump &>/dev/null || sudo apt-get install -y autojump
+command -v pv &>/dev/null || sudo apt-get install -y pv
 
 echo "[4/10] Installing starship..."
 if ! command -v starship &>/dev/null; then
