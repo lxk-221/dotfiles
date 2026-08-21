@@ -93,6 +93,21 @@ EOF
 - 切换仅当前会话有效:共享账号下无法区分你和同事,per-login 是唯一正确粒度;同事分独立账号后,可删掉 zshrc 里的 SSH 默认降级
 
 
+## tmux 双模板(共享服务器协作)
+与 starship 的 SSH 降级同一场景:SSH 到共享服务器时,`prefix` 改键、vi copy-mode、鼠标、zsh 默认 shell 等会影响共用账号的同事。`~/.tmux.conf` 因此分两区:
+
+- **通用区** — 纯增量的设置与按键(方向键分屏、`M-o` 新窗口、`prefix+hjkl` 移动窗格、`C-n/C-p` 切窗口等),不覆盖任何 tmux 默认行为,对任何人安全
+- **模板区** — 破坏性 set/unset 拆成两个模板:`~/.config/tmux/xukun.conf`(个人配置)与 `~/.config/tmux/plain.conf`(逆操作,显式还原全部默认值)
+
+选择逻辑(`~/.config/tmux/is-xukun`):`~/.config/tmux/profile` 文件优先;无该文件时 SSH 会话默认 **plain**(原 prefix C-b),本地默认 **xukun**。
+
+| 命令 | 作用 |
+|---|---|
+| `tmux-plain` | 切协作模板:原 prefix/默认键位,仅保留通用区增量按键 |
+| `tmux-xukun` | 切个人模板:完整个人配置(prefix C-a 等) |
+
+两个函数都会写 profile 文件并 `tmux source-file ~/.tmux.conf` 热重载(等价于 `run_after_tmux_reload.sh` 做的事)。与 starship 的关键差异:starship 渲染是 per-session 的(每个提示符独立读 `STARSHIP_CONFIG`),tmux 配置是 **server 级全局**——切换对本 server 所有 attached 客户端立即生效;且 profile 文件是**账号级**的,共享账号上切到 xukun 后,同事下次 SSH 也会读到 xukun,所以协作结束记得 `tmux-plain` 切回(或删掉 profile 文件恢复 SSH 自动判断)。
+
 ## For a totally new machine
 ```shell
 sudo apt install net-tools curl vim git tmux

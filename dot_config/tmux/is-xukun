@@ -1,0 +1,14 @@
+#!/bin/sh
+# tmux 模板选择器:exit 0 → xukun 个人模板;exit 1 → plain 协作模板。
+# 由 ~/.tmux.conf 末尾的 if-shell 调用。
+#
+# 优先级:~/.config/tmux/profile 文件(内容 xukun|plain,由 zshrc 的
+# tmux-xukun / tmux-plain 函数写入)> 环境探测:SSH 会话默认 plain
+# (原 prefix,不影响共用账号的同事),本地默认 xukun。
+
+f="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/profile"
+if [ -s "$f" ]; then
+    [ "$(tr -d '[:space:]' < "$f")" = xukun ]
+else
+    [ -z "${SSH_CONNECTION:-}${SSH_CLIENT:-}" ]
+fi

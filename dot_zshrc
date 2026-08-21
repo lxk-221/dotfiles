@@ -101,6 +101,29 @@ nerd()  { export STARSHIP_CONFIG="$HOME/.config/starship.toml"; }
 plain() { export STARSHIP_CONFIG="$HOME/.config/starship-plain.toml"; }
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
+# tmux 双模板 — 共享服务器上共用账号时,prefix 改键等会影响同事。~/.tmux.conf 分两区:
+#   通用区(纯增量按键,对任何人安全)+ 模板区(~/.config/tmux/xukun.conf|plain.conf,
+#   破坏性 set/unset 及其逆操作)。无 profile 文件时 SSH 默认 plain、本地默认 xukun。
+# 与 starship 不同:starship 渲染是 per-session 的,tmux 配置是 server 级全局——
+# 切换对本 server 所有 attached 客户端立即生效。注意 profile 文件是账号级的,
+# 在共享账号上 tmux-xukun 后协作,结束时记得切回 plain。
+tmux-xukun() {
+  mkdir -p "$HOME/.config/tmux" && echo xukun > "$HOME/.config/tmux/profile"
+  if tmux info >/dev/null 2>&1 && tmux source-file "$HOME/.tmux.conf"; then
+    echo "tmux: xukun 模板已生效(prefix C-a)"
+  else
+    echo "tmux: xukun 模板已记录,下次启动 tmux 时生效"
+  fi
+}
+tmux-plain() {
+  mkdir -p "$HOME/.config/tmux" && echo plain > "$HOME/.config/tmux/profile"
+  if tmux info >/dev/null 2>&1 && tmux source-file "$HOME/.tmux.conf"; then
+    echo "tmux: plain 模板已生效(原 prefix C-b,协作安全)"
+  else
+    echo "tmux: plain 模板已记录,下次启动 tmux 时生效"
+  fi
+}
+
 # alias / functions
 tarzip() {
   local src="${1:?用法: tarzip <目录> [输出文件名]}"
