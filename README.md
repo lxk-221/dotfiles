@@ -97,7 +97,7 @@ EOF
 与 starship 的 SSH 降级同一场景:SSH 到共享服务器时,`prefix` 改键、vi copy-mode、鼠标、zsh 默认 shell 等会影响共用账号的同事。`~/.tmux.conf` 因此分两区:
 
 - **通用区** — 纯增量的设置与按键(方向键分屏、`M-o` 新窗口、`prefix+hjkl` 移动窗格、`C-n/C-p` 切窗口等),不覆盖任何 tmux 默认行为,对任何人安全
-- **模板区** — 破坏性 set/unset 拆成两个模板:`~/.config/tmux/xukun.conf`(个人配置)与 `~/.config/tmux/plain.conf`(逆操作,显式还原全部默认值)
+- **模板区** — 破坏性 set/unset 拆成两个模板:`~/.config/tmux/xukun.conf`(个人配置)与 `~/.config/tmux/plain.conf`(逆操作,显式还原全部默认值)。注意 `default-shell` 在 Linux 上 plain 显式设为 `/bin/bash` 而非 unset——平台网关强制交互会话用 bash,且 tmux 动态解析链(server 启动 SHELL 快照 → passwd → /bin/sh)在注入过 sh-wrap 的共享平台上不可靠,写死才能确定还原"直连 bash"的协作体验;macOS 则 unset 回落本机 zsh。
 
 选择逻辑(`~/.config/tmux/is-xukun`):`~/.config/tmux/profile` 文件优先;无该文件时 SSH 会话默认 **plain**(原 prefix C-b),本地默认 **xukun**。
 
