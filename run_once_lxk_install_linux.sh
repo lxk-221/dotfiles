@@ -79,7 +79,12 @@ else
 fi
 
 echo "[6/10] Setting default shell to zsh..."
-if [[ "$SHELL" != *zsh* ]]; then
+# 共享平台 job pod(主机名 job-*)跳过:chsh 是账号级改动,会改变同事非交互
+# ssh 命令的 shell 并污染 tmux default-shell 的 passwd 回退链;这类平台网关
+# 对交互会话本来就强制 bash,chsh 无收益纯添乱。
+if [[ "$(hostname)" == job-* ]]; then
+    echo "       job pod detected, skipping chsh (shared account)"
+elif [[ "$SHELL" != *zsh* ]]; then
     chsh -s "$(command -v zsh)"
 fi
 
