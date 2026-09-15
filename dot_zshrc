@@ -46,13 +46,12 @@ ZSH_THEME=""
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+# history 命令的时间戳格式(bash HISTTIMEFORMAT 的 omz 等价物)。omz 在加载时
+# 读取本变量并 alias history='omz_history -t "<格式>"',故必须设在 source omz 之前
+# (本行位置正确)。预设三种:mm/dd/yyyy | dd.mm.yyyy | yyyy-mm-dd;自定义则直接写
+# strftime 格式串。时间戳的"记录"由 omz 默认的 EXTENDED_HISTORY 负责(恒开),
+# 本变量只控制"显示"。设此前的旧条目已带时间戳,history 会一并显示。
+HIST_STAMPS="%F %T"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
