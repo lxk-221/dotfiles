@@ -158,6 +158,8 @@ macOS 的输入法走系统自带的「键盘 → 输入源」，无需 fcitx5�
 
 **注意 `chezmoi diff` 的噪音:** 由于 chezmoi 管理的目标状态是 `[静态 + marker]`,而 apply 后实际文件多了动态部分,所以 `chezmoi diff` 会显示"即将删除 marker 以下的行"——这是预期行为,apply 会重新生成,无害。同理,**每次交互式 `chezmoi apply` 会询问一次** ".zshrc has changed since chezmoi last wrote it"(run_after 的追加让 live 文件永远不等于 chezmoi 记录的上次写入内容)——按 `y` 确认即可;脚本/非交互场景用 `chezmoi apply --force`。这是该架构的固定成本。
 
+**切勿对 `~/.zshrc` 做单文件 apply:** `chezmoi apply ~/.zshrc` 会覆盖文件但**不触发 `run_after_zshrc_sup.sh`**(脚本不在该 target 的过滤范围内),marker 以下的动态段被抹掉且无人补写——conda 块、pixi/go/cargo PATH 全部丢失,直到下一次**全量** `chezmoi apply` 才恢复。症状:新 shell 里 `conda activate` 报 "Run 'conda init' before 'conda activate'"(conda 是二进制而非 shell 函数)。规则:**永远全量 `chezmoi apply`**(可配 `--force`),需要单文件预览时用 `chezmoi cat`/`chezmoi diff` 而非单文件 apply。
+
 ## 三类脚本的职责划分
 
 | 脚本 | 何时跑 | 职责 |
